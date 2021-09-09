@@ -1,0 +1,17 @@
+.profile-table {
+  margin: 1.5em 0;
+}
+
+.profile-table th {
+  font-weight: normal;
+  text-transform: capitalize;
+  text-align: center;
+  padding: 0 15px 0 0;
+}
+
+.profile-table td {
+  font-weight: bold;
+  text-align: center;
+  font-size: 1.2em;
+  padding: 0 15px 0 0;
+}

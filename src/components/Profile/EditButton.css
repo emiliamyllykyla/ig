@@ -1,0 +1,24 @@
+.profile-editBtn-container {
+  display: inline-block;
+}
+.profile-editBtn a {
+  text-decoration: none;
+  color: inherit;
+}
+
+.profile-editBtn {
+  width: 25px;
+  height: 25px;
+  display: grid;
+  place-items: center;
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  margin-left: 2px;
+  font-size: 0.8em;
+  color: silver;
+}
+
+.profile-editBtn:hover {
+    color: #444;
+}

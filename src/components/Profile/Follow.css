@@ -1,0 +1,22 @@
+.follow-btn {
+  display: block;
+  padding: 0.5em 2em;
+  margin-top: 2em;
+  text-transform: uppercase;
+  color: #444;
+  border: 1px solid lightpink;
+  border-radius: 3px;
+  background-color: lightpink;
+  cursor: pointer;
+}
+
+.follow-btn:hover,
+.follow-btn.unfollow:hover {
+  color: black;
+  background-color: rgb(255, 155, 170);
+  border: 1px solid rgb(255, 155, 170);
+}
+
+.follow-btn.unfollow {
+  background-color: transparent;
+}

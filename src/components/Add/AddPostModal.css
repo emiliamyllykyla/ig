@@ -1,0 +1,129 @@
+.addImg-modal {
+  display: grid;
+  place-items: center;
+  min-height: 100vh;
+  margin: 1em 0;
+}
+
+.addImg-modal-content {
+  display: grid;
+  place-items: center;
+}
+
+.addImg-modal-h1 {
+  font-size: 2em;
+  font-weight: normal;
+  color: #444;
+}
+
+.addImg-img {
+  margin: 1em 0;
+  object-fit: contain;
+  max-width: 80vw;
+  max-height: min(80vw, 70vh);
+  aspect-ratio: 1;
+}
+
+.addImg-form {
+  display: grid;
+  place-items: center;
+  min-width: 100%;
+}
+
+.addImg-form > div {
+  width: 100%;
+}
+
+.addImg-form textarea {
+  width: 100%;
+  font-family: inherit;
+  padding: 0.5em;
+  border: 2px solid lightpink;
+  border-radius: 3px;
+  resize: vertical;
+  margin-bottom: 1em;
+}
+
+.addImg-form label {
+  display: block;
+  margin-bottom: 0.5em;
+  color: #444;
+}
+
+.addImg-form button {
+  display: block;
+  width: 150px;
+  padding: 0.5em 2em;
+  font-size: 1em;
+  text-transform: uppercase;
+  color: #444;
+  border: 1px solid lightpink;
+  border-radius: 3px;
+  margin: 0.3em;
+  cursor: pointer;
+}
+
+.addImg-form button:hover {
+  color: black;
+  background-color: rgb(255, 155, 170);
+  border: 1px solid rgb(255, 155, 170);
+}
+
+.addImg-btn-save {
+  background-color: lightpink;
+}
+
+.addImg-btn-cancel {
+  background-color: transparent;
+}
+
+.addImg-btn-save:disabled,
+.addImg-btn-save:disabled:hover {
+  background-color: gainsboro;
+  border: 1px solid gainsboro;
+  color: #444;
+  cursor: initial;
+}
+
+.dropzone {
+  height: 200px;
+  width: 100%;
+  border: 2px dashed lightpink;
+  display: grid;
+  place-items: center;
+  color: lightpink;
+  margin-bottom: 1em;
+  background-color: rgba(255, 155, 170, 0.1);
+}
+
+.dropzone:hover {
+  border: 2px dashed rgb(255, 155, 170);
+  color: rgb(255, 155, 170);
+  background-color: rgba(255, 155, 170, 0.2);
+}
+
+@media only screen and (min-width: 50em) {
+  .addImg-modal {
+    place-items: start center;
+  }
+  .addImg-modal-content > div {
+    display: grid;
+    grid-template-columns: 3fr 2fr;
+    gap: 1em;
+    margin: 0 3em;
+  }
+  .addImg-img {
+    justify-self: right;
+    max-width: 50vw;
+    max-height: min(50vw, 80vh);
+  }
+  .addImg-form {
+    display: unset;
+    align-self: center;
+    max-width: min(30vw, 100%);
+    min-width: 300px;
+  }
+  .upload {
+    display: unset;
+  }
+}
