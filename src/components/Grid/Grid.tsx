@@ -3,6 +3,7 @@ import { Post } from "../../features/posts/postsSlice";
 import Modal from "../Modal/Modal";
 import PostModal from "./PostModal";
 import "./Grid.css";
+import GridItem from "./GridItem";
 
 const Grid = ({ items }: { items: Post[] }) => {
   const [openPost, setOpen] = useState<Post | null>(null);
@@ -11,13 +12,7 @@ const Grid = ({ items }: { items: Post[] }) => {
     () => (
       <>
         {items.map((item) => (
-          <div
-            key={item.id}
-            className="grid-item"
-            onClick={() => setOpen(item)}
-          >
-            <img src={item.data.imageUrl} alt="post" />
-          </div>
+          <GridItem key={item.id} item={item} setOpen={() => setOpen(item)} />
         ))}
       </>
     ),
