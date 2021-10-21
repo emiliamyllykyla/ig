@@ -4,7 +4,8 @@
   display: flex;
   justify-content: space-between;
   align-items: baseline;
-  color: #444;
+  color: #54424B;
+
 }
 
 .nav a {
@@ -30,7 +31,8 @@
 
 .nav li:hover,
 .nav li .active {
-  color: black;
+  color: #A16484;
+
 }
 
 .icon {
