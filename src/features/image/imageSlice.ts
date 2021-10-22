@@ -29,9 +29,9 @@ export const uploadImage = Toolkit.createAsyncThunk(
 // Delete a file from Storage
 export const deleteImage = Toolkit.createAsyncThunk(
   "image/delete",
-  async (filename: string) => {
-    const ref = Storage.ref(storage, filename);
-    await Storage.getDownloadURL(ref).then(() => Storage.deleteObject(ref));
+  async (url: string) => {
+    const ref = Storage.ref(storage, url);
+    await Storage.deleteObject(ref);
     return { url: "" };
   }
 );

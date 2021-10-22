@@ -1,16 +1,17 @@
 import React, { useState } from "react";
 import { FaTimes } from "react-icons/fa";
 import { Redirect } from "react-router";
+import { AppDispatch } from "../../app/store";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
+import { deleteImage, uploadImage } from "../../features/image/imageSlice";
 import { selectAuthId, update } from "../../features/auth/authSlice";
 import { selectUserById } from "../../features/users/usersSlice";
 import { updateUser } from "../../features/profile/profileSlice";
 import { UserData } from "../../features/profile/types";
 import { history } from "../../history";
-import "./EditModal.css";
 import DropZone from "../Dropzone/DropZone";
 import placeholder from "../../images/placeholder_profile.png";
-import { uploadImage } from "../../features/image/imageSlice";
+import "./EditModal.css";
 
 type ChangeEvent =
   | React.ChangeEvent<HTMLInputElement>
@@ -30,19 +31,21 @@ const makeInitialData = (user: UserData | undefined) => ({
   imageUrl: user?.imageUrl || "",
 });
 
-const makedata = (
-  uid: string,
+// Returns an object containing updated user data
+const makeData = async (
   user: UserData,
   form: FormData,
-  imageUrl?: string
+  file: File | null,
+  dispatch: AppDispatch
 ) => {
-  const data = {
-    uid: uid,
-    following: user.following,
-    followers: user.followers,
-    ...form,
-  };
-  return imageUrl ? { ...data, imageUrl: imageUrl } : data;
+  if (file) {
+    // Delete old profile image from Storage
+    dispatch(deleteImage(user.imageUrl));
+    // Upload new profile image to Cloud Storage
+    return dispatch(uploadImage(file))
+      .then((r) => (r.payload as { url: string }).url)
+      .then((imageUrl) => ({ ...user, ...form, imageUrl: imageUrl }));
+  } else return { ...user, ...form };
 };
 
 const EditModal = ({ onClose }: { onClose: () => void }) => {
@@ -51,38 +54,19 @@ const EditModal = ({ onClose }: { onClose: () => void }) => {
   const dispatch = useAppDispatch();
   const authId = useAppSelector(selectAuthId);
   const user = useAppSelector(selectUserById(authId));
-  const initialData = makeInitialData(user)
+  const initialData = makeInitialData(user);
   const [form, setForm] = useState<FormData>(initialData);
 
   const handleSubmit = (e: React.SyntheticEvent) => {
     if (!authId || !user) return <Redirect to="/login" />;
     e.preventDefault();
-
-    const makeData = async () => {
-      // If no image file, make data with old profile image url
-      if (!imageFile) {
-        return makedata(authId, user, form);
-      } else {
-        // Else upload new image to Cloud Storage and make data with new url
-        return dispatch(uploadImage(imageFile))
-          .then((r) => {
-            // TODO: Delete old image from Coud Storage
-            return (r.payload as { url: string }).url
-          })
-          .then((url) => {
-            return makedata(authId, user, form, url);
-          });
-      }
-    };
-    // Then update userdata
-    makeData().then((data) => {
+    // Update user
+    makeData(user, form, imageFile, dispatch).then((data) => {
       dispatch(update({ authId, username: data.username }));
       dispatch(updateUser(data)).then(() => {
         history.push(`/profile/${data.username}`);
       });
     });
-
-    // DELETE OLD IMAGE FROM STORAGE
   };
 
   const handleChange = (e: ChangeEvent) => {
