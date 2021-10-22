@@ -3,15 +3,23 @@ import * as Storage from "firebase/storage";
 import { RootState } from "../../app/store";
 import { storage } from "../../firebase";
 import { v4 as uuidv4 } from "uuid";
+import imageCompression from "browser-image-compression";
 
 // Upload a file to Storage
 export const uploadImage = Toolkit.createAsyncThunk(
   "image/upload",
   async (file: File) => {
+    // Compress file
+    const options = {
+      maxSizeMB: 1,
+      maxWidthOrHeight: 1920,
+      useWebWorker: true,
+    };
+    const compressedFile = await imageCompression(file, options);
     // Create unique filenames to avoid conflicts
-    const filename = uuidv4() + file.name;
+    const filename = uuidv4() + compressedFile.name;
     const ref = Storage.ref(storage, filename);
-    const url = await Storage.uploadBytes(ref, file).then(() =>
+    const url = await Storage.uploadBytes(ref, compressedFile).then(() =>
       Storage.getDownloadURL(ref)
     );
     return { url };
