@@ -13,6 +13,7 @@
 .edit-modal-h1 {
   font-size: 2em;
   font-weight: normal;
+  color: #444;
 }
 
 .edit-profile-img {
@@ -39,7 +40,7 @@
   width: 100%;
   font-family: inherit;
   padding: 0.5em;
-  border: 1px solid #444;
+  border: 2px solid lightpink;
   border-radius: 3px;
   resize: vertical;
   margin-bottom: 1em;
@@ -47,7 +48,8 @@
 
 .edit-form label {
   display: block;
-  margin-bottom: 0.5em;
+  margin-bottom: 0.3em;
+  color: #444;
 }
 
 .edit-form button {
