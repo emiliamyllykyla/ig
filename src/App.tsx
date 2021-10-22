@@ -43,7 +43,9 @@ function App() {
             <Login />
           </Route>
           <Route path="/register">
-            <Register />
+            <div className="page">
+              <Register />
+            </div>
           </Route>
           <Route path="/all">
             <div className="page">

@@ -1,8 +1,12 @@
 import { useState } from "react";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectAuthId, update } from "../../features/auth/authSlice";
+import { uploadImage } from "../../features/image/imageSlice";
 import { createUser } from "../../features/profile/profileSlice";
 import { UserData } from "../../features/profile/types";
+import placeholder from "../../images/placeholder_profile.png";
+import DropZone from "../Dropzone/DropZone";
+import "./Register.css";
 
 type ChangeEvent =
   | React.ChangeEvent<HTMLInputElement>
@@ -12,90 +16,99 @@ type FormData = {
   username: string;
   email: string;
   bio: string;
-  imageUrl: string;
 };
 
 const initialFormData = {
   username: "",
   email: "",
   bio: "",
-  imageUrl: "",
 };
 
-const makedata = (uid: string, form: FormData): UserData => {
+const makedata = (uid: string, imageUrl: string, form: FormData): UserData => {
   return {
     uid: uid,
     following: [],
     followers: [],
+    imageUrl: imageUrl,
     ...form,
   };
 };
 
 const Register = () => {
+  const [imageFile, setImageFile] = useState<File | null>(null);
+  const [imagePreview, setImagePreview] = useState("");
   const [form, setForm] = useState<FormData>(initialFormData);
   const authId = useAppSelector(selectAuthId);
   const dispatch = useAppDispatch();
 
   const handleSubmit = async (ev: React.SyntheticEvent) => {
     if (!authId) return;
+    if (!imageFile) return null;
     ev.preventDefault();
-    const data = makedata(authId, form);
-    dispatch(update({ authId, username: data.username }));
-    dispatch(createUser(data));
+    dispatch(uploadImage(imageFile))
+      .then((r) => (r.payload as { url: string }).url)
+      .then((url) => {
+        const data = makedata(authId, url, form);
+        dispatch(update({ authId, username: data.username }));
+        dispatch(createUser(data));
+      });
   };
 
   const handleChange = (e: ChangeEvent) => {
     setForm({ ...form, [e.target.name]: e.target.value });
   };
 
+  const onFileDrop = (file: File) => {
+    setImageFile(file);
+    setImagePreview(URL.createObjectURL(file));
+  };
+
   return (
-    <div>
-      Welcome to IG! Register here:
-      <form onSubmit={handleSubmit}>
+    <div className="register">
+      <h1>Welcome to IG! Register here:</h1>
+      <form className="register-form" onSubmit={handleSubmit}>
         <div>
-          <label>
-            Username:{" "}
-            <input
-              type="text"
-              name="username"
-              value={form.username}
-              onChange={handleChange}
-            />
-          </label>
+          <label htmlFor="username">Username: </label>
+          <input
+            type="text"
+            id="username"
+            name="username"
+            value={form.username}
+            onChange={handleChange}
+          />
         </div>
         <div>
-          <label>
-            bio:{" "}
-            <textarea name="bio" value={form.bio} onChange={handleChange} />
-          </label>
+          <label htmlFor="email">Email: </label>
+          <input
+            type="text"
+            id="email"
+            name="email"
+            value={form.email}
+            onChange={handleChange}
+          />
         </div>
         <div>
-          <label>
-            email:{" "}
-            <input
-              type="text"
-              name="email"
-              value={form.email}
-              onChange={handleChange}
-            />
-          </label>
+          <label htmlFor="bio">Bio: </label>
+          <textarea
+            id="bio"
+            name="bio"
+            value={form.bio}
+            onChange={handleChange}
+          />
         </div>
         <div>
-          <label>
-            profile image url:{" "}
-            <input
-              type="url"
-              name="imageUrl"
-              value={form.imageUrl}
-              onChange={handleChange}
-            />
-          </label>
+          <label>Profile image: </label>
+          <img
+            className="register-img"
+            src={imagePreview || placeholder}
+            alt="Profile preview"
+          />
+          <DropZone onFile={onFileDrop} file={imageFile} />
         </div>
-        <input type="submit" value="submit" />
+        <button className="register-btn-save" type="submit">
+          Register
+        </button>
       </form>
-      <div>
-        https://images.unsplash.com/photo-1548678756-aa5ed92c4796?ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80
-      </div>
     </div>
   );
 };

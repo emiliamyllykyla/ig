@@ -1,7 +1,7 @@
 import { ChangeEvent, useState } from "react";
 import { FaTimes } from "react-icons/fa";
 import Preview from "./Preview";
-import DropZone from "./DropZone";
+import DropZone from "../Dropzone/DropZone";
 import "./AddPostModal.css";
 
 interface AddPostModalProps {

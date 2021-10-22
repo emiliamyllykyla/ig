@@ -1,4 +1,5 @@
 import Dropzone from "react-dropzone";
+import "./DropZone.css";
 
 type DropzoneProps = {
   onFile: (file: File) => void;

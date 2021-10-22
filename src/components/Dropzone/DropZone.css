@@ -1,0 +1,16 @@
+.dropzone {
+  height: 200px;
+  width: 100%;
+  border: 2px dashed lightpink;
+  display: grid;
+  place-items: center;
+  color: lightpink;
+  margin-bottom: 1em;
+  background-color: rgba(255, 155, 170, 0.1);
+}
+
+.dropzone:hover {
+  border: 2px dashed rgb(255, 155, 170);
+  color: rgb(255, 155, 170);
+  background-color: rgba(255, 155, 170, 0.2);
+}

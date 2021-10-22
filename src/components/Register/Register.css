@@ -1,0 +1,65 @@
+.register {
+  display: grid;
+  place-items: center;
+}
+
+.register h1 {
+  font-size: 2em;
+  font-weight: normal;
+  color: #444;
+  margin: 2rem auto;
+}
+
+.register-form {
+  width: 100%;
+  max-width: 500px;
+}
+
+.register-form input,
+.register-form textarea {
+  width: 100%;
+  font-family: inherit;
+  padding: 0.5em;
+  border: 2px solid lightpink;
+  border-radius: 3px;
+  resize: vertical;
+  margin-bottom: 1em;
+}
+
+.register-form label {
+  display: block;
+  margin-bottom: 0.3em;
+  color: #444;
+}
+
+.register-img {
+  display: block;
+  border-radius: 50%;
+  width: 150px;
+  height: 150px;
+  object-fit: cover;
+  margin: 1em auto;
+}
+
+.register-form button {
+  display: block;
+  width: 150px;
+  padding: 0.5em 2em;
+  font-size: 1em;
+  text-transform: uppercase;
+  color: #444;
+  border: 1px solid lightpink;
+  border-radius: 3px;
+  margin: 2em auto;
+  cursor: pointer;
+}
+
+.register-form button:hover {
+  color: black;
+  background-color: rgb(255, 155, 170);
+  border: 1px solid rgb(255, 155, 170);
+}
+
+.register-btn-save {
+  background-color: lightpink;
+}
