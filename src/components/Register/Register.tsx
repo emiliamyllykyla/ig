@@ -1,9 +1,15 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
+import { Redirect } from "react-router-dom";
 import { useAppDispatch, useAppSelector } from "../../app/hooks";
 import { selectAuthId, update } from "../../features/auth/authSlice";
 import { uploadImage } from "../../features/image/imageSlice";
 import { createUser } from "../../features/profile/profileSlice";
 import { UserData } from "../../features/profile/types";
+import {
+  selectUsersStatus,
+  getUsersByIdList,
+  selectUserById,
+} from "../../features/users/usersSlice";
 import placeholder from "../../images/placeholder_profile.png";
 import DropZone from "../Dropzone/DropZone";
 import "./Register.css";
@@ -39,7 +45,13 @@ const Register = () => {
   const [imagePreview, setImagePreview] = useState("");
   const [form, setForm] = useState<FormData>(initialFormData);
   const authId = useAppSelector(selectAuthId);
+  const user = useAppSelector(selectUserById(authId));
+  const usersStatus = useAppSelector(selectUsersStatus)
   const dispatch = useAppDispatch();
+  
+  useEffect(() => {
+    if (authId) dispatch(getUsersByIdList([authId]));
+  }, [dispatch, authId]);
 
   const handleSubmit = async (ev: React.SyntheticEvent) => {
     if (!authId) return;
@@ -62,6 +74,10 @@ const Register = () => {
     setImageFile(file);
     setImagePreview(URL.createObjectURL(file));
   };
+
+  if (!authId) return <Redirect to="/login" />;
+  if (usersStatus === "Loading") return <div>Loading...</div>
+  if (user) return <Redirect to={`/profile/${user.username}`} />;
 
   return (
     <div className="register">
